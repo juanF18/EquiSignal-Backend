@@ -1,11 +1,39 @@
 package config
 
+import (
+	"log"
+	"os"
+)
+
 type Config struct {
-	HttpPort string
+	DBUser     string
+	DBPassword string
+	DBHost     string
+	DBPort     string
+	DBName     string
+	HttpPort   string
 }
 
 func LoadConfig() *Config {
-	return &Config{
-		HttpPort: "8080",
+	cfg := &Config{
+		DBUser:     getEnv("DB_USER", ""),
+		DBPassword: getEnv("DB_PASSWORD", ""),
+		DBHost:     getEnv("DB_HOST", "localhost"),
+		DBPort:     getEnv("DB_PORT", "26257"), // Cockroach default port
+		DBName:     getEnv("DB_NAME", "defaultdb"),
+		HttpPort:   getEnv("HTTP_PORT", "8080"),
 	}
+
+	if cfg.DBUser == "" || cfg.DBPassword == "" {
+		log.Fatal("❌ DB_USER y DB_PASSWORD son obligatorios")
+	}
+
+	return cfg
+}
+
+func getEnv(key, fallback string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+	return fallback
 }
