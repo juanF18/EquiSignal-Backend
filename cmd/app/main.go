@@ -9,6 +9,9 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/juanF18/EquiSignal-Backend/internal/config"
 	"github.com/juanF18/EquiSignal-Backend/internal/infrastructure/db"
+	"github.com/juanF18/EquiSignal-Backend/internal/infrastructure/external"
+	"github.com/juanF18/EquiSignal-Backend/internal/interface/handlers"
+	"github.com/juanF18/EquiSignal-Backend/internal/interface/http"
 )
 
 func main() {
@@ -25,6 +28,12 @@ func main() {
 	var now time.Time
 	db.DB.Raw("SELECT NOW()").Scan(&now)
 	fmt.Println("⏰ DB Time:", now)
+
+	// API externa
+	externalAPI := external.NewExternalAPI(cfg)
+	stockHandler := handlers.NewStockHandler(externalAPI)
+
+	http.SetupRoutes(r, stockHandler)
 
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{

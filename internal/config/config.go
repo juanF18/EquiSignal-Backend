@@ -6,22 +6,26 @@ import (
 )
 
 type Config struct {
-	DBUser     string
-	DBPassword string
-	DBHost     string
-	DBPort     string
-	DBName     string
-	HttpPort   string
+	DBUser           string
+	DBPassword       string
+	DBHost           string
+	DBPort           string
+	DBName           string
+	HttpPort         string
+	ExternalAPIToken string
+	ExternalAPIURL   string
 }
 
 func LoadConfig() *Config {
 	cfg := &Config{
-		DBUser:     getEnv("DB_USER", ""),
-		DBPassword: getEnv("DB_PASSWORD", ""),
-		DBHost:     getEnv("DB_HOST", "localhost"),
-		DBPort:     getEnv("DB_PORT", "26257"), // Cockroach default port
-		DBName:     getEnv("DB_NAME", "defaultdb"),
-		HttpPort:   getEnv("HTTP_PORT", "8080"),
+		DBUser:           getEnv("DB_USER", ""),
+		DBPassword:       getEnv("DB_PASSWORD", ""),
+		DBHost:           getEnv("DB_HOST", "localhost"),
+		DBPort:           getEnv("DB_PORT", "26257"), // Cockroach default port
+		DBName:           getEnv("DB_NAME", "defaultdb"),
+		HttpPort:         getEnv("HTTP_PORT", "8080"),
+		ExternalAPIToken: getEnv("EXTERNAL_API_TOKEN", ""),
+		ExternalAPIURL:   getEnv("EXTERNAL_API_URL", ""),
 	}
 
 	if cfg.DBUser == "" || cfg.DBPassword == "" {
