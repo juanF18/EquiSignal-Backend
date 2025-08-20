@@ -7,9 +7,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/juanF18/EquiSignal-Backend/internal/application"
 	"github.com/juanF18/EquiSignal-Backend/internal/config"
 	"github.com/juanF18/EquiSignal-Backend/internal/infrastructure/db"
-	"github.com/juanF18/EquiSignal-Backend/internal/infrastructure/external"
+	"github.com/juanF18/EquiSignal-Backend/internal/interface/external"
 	"github.com/juanF18/EquiSignal-Backend/internal/interface/handlers"
 	"github.com/juanF18/EquiSignal-Backend/internal/interface/http"
 )
@@ -31,7 +32,8 @@ func main() {
 
 	// API externa
 	externalAPI := external.NewExternalAPI(cfg)
-	stockHandler := handlers.NewStockHandler(externalAPI)
+	stockService := application.NewStockService(externalAPI)
+	stockHandler := handlers.NewStockHandler(stockService)
 
 	http.SetupRoutes(r, stockHandler)
 
