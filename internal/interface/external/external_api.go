@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/juanF18/EquiSignal-Backend/internal/config"
-	"github.com/juanF18/EquiSignal-Backend/internal/infrastructure/dto"
+	"github.com/juanF18/EquiSignal-Backend/internal/interface/dto"
 )
 
 type ExternalAPI struct {
@@ -40,6 +40,11 @@ func (e *ExternalAPI) FetchStocks(nextPage string) (*dto.StockResponse, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+
+	// Validamos código HTTP
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("API externa respondió con código %d", resp.StatusCode)
+	}
 
 	var stockResp dto.StockResponse
 	if err := json.NewDecoder(resp.Body).Decode(&stockResp); err != nil {
