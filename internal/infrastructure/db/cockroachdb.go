@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/juanF18/EquiSignal-Backend/internal/config"
+	"github.com/juanF18/EquiSignal-Backend/internal/domain/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -25,6 +26,11 @@ func ConnectCockroachDB(cfg *config.Config) {
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal("❌ Error conectando a CockroachDB: ", err)
+	}
+
+	err = db.AutoMigrate(&models.Stock{})
+	if err != nil {
+		log.Fatal("❌ Error al migrar la base de datos: ", err)
 	}
 
 	DB = db

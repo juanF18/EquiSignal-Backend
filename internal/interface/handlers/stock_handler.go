@@ -4,25 +4,22 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/juanF18/EquiSignal-Backend/internal/infrastructure/external"
+	"github.com/juanF18/EquiSignal-Backend/internal/application"
 )
 
 type StockHandler struct {
-	api *external.ExternalAPI
+	service *application.StockService
 }
 
-func NewStockHandler(api *external.ExternalAPI) *StockHandler {
-	return &StockHandler{api: api}
+func NewStockHandler(service *application.StockService) *StockHandler {
+	return &StockHandler{service: service}
 }
 
-func (h *StockHandler) GetStocks(c *gin.Context) {
-	nextPage := c.Query("next_page")
-
-	data, err := h.api.FetchStocks(nextPage)
+func (h *StockHandler) UpdateStocks(c *gin.Context) {
+	err := h.service.UpdateStocks()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-
-	c.JSON(http.StatusOK, data)
+	c.JSON(http.StatusOK, gin.H{"message": "Stocks updated successfully"})
 }

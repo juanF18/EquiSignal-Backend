@@ -8,6 +8,6 @@ import (
 func SetupRoutes(r *gin.Engine, stockHandler *handlers.StockHandler) {
 	api := r.Group("/api")
 	{
-		api.GET("/stocks", stockHandler.GetStocks)
+		RegisterExternalAPIRoutes(api, stockHandler)
 	}
 }
