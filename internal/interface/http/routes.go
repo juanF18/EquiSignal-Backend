@@ -9,5 +9,6 @@ func SetupRoutes(r *gin.Engine, stockHandler *handlers.StockHandler) {
 	api := r.Group("/api")
 	{
 		RegisterExternalAPIRoutes(api, stockHandler)
+		RegisterStockRoutes(api, stockHandler)
 	}
 }
