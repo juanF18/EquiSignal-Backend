@@ -51,3 +51,22 @@ func (s *StockService) UpdateStocks() error {
 
 	return nil
 }
+
+// GetStocks devuelve una lista de stocks con paginación
+func (s *StockService) GetStocks(page, pageSize int) ([]models.Stock, int64, error) {
+	var stocks []models.Stock
+	var total int64
+
+	// contar el total de registros
+	if err := db.DB.Model(&models.Stock{}).Count(&total).Error; err != nil {
+		return nil, 0, err
+	}
+
+	// aplicar paginación
+	offset := (page - 1) * pageSize
+	if err := db.DB.Limit(pageSize).Offset(offset).Order("time DESC").Find(&stocks).Error; err != nil {
+		return nil, 0, err
+	}
+
+	return stocks, total, nil
+}
