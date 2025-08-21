@@ -8,5 +8,6 @@ import (
 func RegisterStockRoutes(r *gin.RouterGroup, h *handlers.StockHandler) {
 	{
 		r.GET("/stocks", h.GetStocks)
+		r.GET("/stocks/recommend", h.GetRecommend)
 	}
 }

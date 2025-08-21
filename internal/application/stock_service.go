@@ -3,6 +3,7 @@ package application
 import (
 	"log"
 
+	"github.com/juanF18/EquiSignal-Backend/internal/algorithms/stock"
 	"github.com/juanF18/EquiSignal-Backend/internal/domain/models"
 	"github.com/juanF18/EquiSignal-Backend/internal/infrastructure/db"
 	"github.com/juanF18/EquiSignal-Backend/internal/interface/external"
@@ -69,4 +70,13 @@ func (s *StockService) GetStocks(page, pageSize int) ([]models.Stock, int64, err
 	}
 
 	return stocks, total, nil
+}
+
+func (s *StockService) GetRecommend(limit int) ([]stock.StockRecommendation, error) {
+	var stocks []models.Stock
+	if err := db.DB.Find(&stocks).Error; err != nil {
+		return nil, err
+	}
+
+	return stock.RecommendStocks(stocks, limit), nil
 }
