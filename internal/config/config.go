@@ -14,6 +14,7 @@ type Config struct {
 	HttpPort         string
 	ExternalAPIToken string
 	ExternalAPIURL   string
+	FrontEndURL      string
 }
 
 func LoadConfig() *Config {
@@ -26,6 +27,7 @@ func LoadConfig() *Config {
 		HttpPort:         getEnv("HTTP_PORT", "8080"),
 		ExternalAPIToken: getEnv("EXTERNAL_API_TOKEN", ""),
 		ExternalAPIURL:   getEnv("EXTERNAL_API_URL", ""),
+		FrontEndURL:      getEnv("FRONT_END_URL", ""),
 	}
 
 	if cfg.DBUser == "" || cfg.DBPassword == "" {
