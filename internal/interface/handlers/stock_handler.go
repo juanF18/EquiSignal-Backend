@@ -28,8 +28,9 @@ func (h *StockHandler) UpdateStocks(c *gin.Context) {
 func (h *StockHandler) GetStocks(c *gin.Context) {
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "10"))
+	search := c.DefaultQuery("search", "")
 
-	stocks, total, err := h.service.GetStocks(page, pageSize)
+	stocks, total, err := h.service.GetStocks(page, pageSize, search)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
