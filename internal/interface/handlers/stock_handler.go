@@ -26,9 +26,21 @@ func (h *StockHandler) UpdateStocks(c *gin.Context) {
 }
 
 func (h *StockHandler) GetStocks(c *gin.Context) {
-	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
-	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "10"))
+	pageStr := c.DefaultQuery("page", "1")
+	pageSizeStr := c.DefaultQuery("pageSize", "10")
 	search := c.DefaultQuery("search", "")
+
+	// Validar y parsear page
+	page, err := strconv.Atoi(pageStr)
+	if err != nil || page <= 0 {
+		page = 1
+	}
+
+	// Validar y parsear pageSize
+	pageSize, err := strconv.Atoi(pageSizeStr)
+	if err != nil || pageSize <= 0 {
+		pageSize = 10
+	}
 
 	stocks, total, err := h.service.GetStocks(page, pageSize, search)
 

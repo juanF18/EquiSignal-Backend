@@ -187,6 +187,12 @@ func defaultQuery(value, defaultValue string) string {
 	if value == "" {
 		return defaultValue
 	}
+
+	// Verificar si es un número válido y positivo para los parámetros de paginación
+	if val, err := strconv.Atoi(value); err != nil || val <= 0 {
+		return defaultValue
+	}
+
 	return value
 }
 
